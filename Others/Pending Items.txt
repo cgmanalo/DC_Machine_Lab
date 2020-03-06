@@ -1,0 +1,4 @@
+1. Computation of Rs in voltage regulator.
+2. Design computation of voltmeter circuit w/ smoothing capacitor.
+3. Linear Regression equation for ammeter.
+4. Linear Regression equation for voltmeter.
