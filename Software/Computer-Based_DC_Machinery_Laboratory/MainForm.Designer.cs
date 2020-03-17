@@ -143,7 +143,7 @@
             this.Connect.BackColor = System.Drawing.SystemColors.ControlLight;
             this.Connect.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.Connect.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Connect.ForeColor = System.Drawing.Color.Lime;
+            this.Connect.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.Connect.Location = new System.Drawing.Point(34, 32);
             this.Connect.Name = "Connect";
             this.Connect.Size = new System.Drawing.Size(105, 23);
@@ -174,6 +174,7 @@
             this.rtfData.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.rtfData.EnableAutoDragDrop = true;
             this.rtfData.Location = new System.Drawing.Point(34, 171);
+            this.rtfData.Margin = new System.Windows.Forms.Padding(10, 3, 8, 3);
             this.rtfData.Name = "rtfData";
             this.rtfData.Size = new System.Drawing.Size(1302, 509);
             this.rtfData.TabIndex = 11;
@@ -184,7 +185,7 @@
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.Green;
+            this.label1.ForeColor = System.Drawing.Color.Lime;
             this.label1.Location = new System.Drawing.Point(31, 150);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(128, 16);
@@ -207,6 +208,7 @@
             this.lblDateTime.AutoSize = true;
             this.lblDateTime.BackColor = System.Drawing.Color.Transparent;
             this.lblDateTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDateTime.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
             this.lblDateTime.Location = new System.Drawing.Point(1109, 37);
             this.lblDateTime.Name = "lblDateTime";
             this.lblDateTime.Size = new System.Drawing.Size(0, 20);
@@ -231,7 +233,7 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            this.groupBox1.BackColor = System.Drawing.Color.Gray;
             this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.trkSpeed);
             this.groupBox1.Controls.Add(this.pictureBox5);
@@ -262,7 +264,7 @@
             this.groupBox1.Controls.Add(this.txtE1Reading);
             this.groupBox1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.ForeColor = System.Drawing.Color.Maroon;
+            this.groupBox1.ForeColor = System.Drawing.Color.Red;
             this.groupBox1.Location = new System.Drawing.Point(418, 32);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(661, 107);
@@ -467,7 +469,7 @@
             this.label5.AutoSize = true;
             this.label5.BackColor = System.Drawing.Color.Transparent;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.ForeColor = System.Drawing.Color.Green;
+            this.label5.ForeColor = System.Drawing.Color.Lime;
             this.label5.Location = new System.Drawing.Point(434, 77);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(17, 16);
@@ -503,7 +505,7 @@
             this.label4.AutoSize = true;
             this.label4.BackColor = System.Drawing.Color.Transparent;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.Color.Green;
+            this.label4.ForeColor = System.Drawing.Color.Lime;
             this.label4.Location = new System.Drawing.Point(326, 77);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(17, 16);
@@ -538,7 +540,7 @@
             this.label3.AutoSize = true;
             this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.Color.Green;
+            this.label3.ForeColor = System.Drawing.Color.Lime;
             this.label3.Location = new System.Drawing.Point(218, 77);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(17, 16);
@@ -561,7 +563,7 @@
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.Color.Transparent;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.Color.Green;
+            this.label2.ForeColor = System.Drawing.Color.Lime;
             this.label2.Location = new System.Drawing.Point(109, 77);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(17, 16);
@@ -592,21 +594,21 @@
             // openLaboratoryManualToolStripMenuItem
             // 
             this.openLaboratoryManualToolStripMenuItem.Name = "openLaboratoryManualToolStripMenuItem";
-            this.openLaboratoryManualToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openLaboratoryManualToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.openLaboratoryManualToolStripMenuItem.Text = "Open";
             this.openLaboratoryManualToolStripMenuItem.Click += new System.EventHandler(this.openLaboratoryManualToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -633,7 +635,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = global::Computer_Based_DC_Machinery_Laboratory.Properties.Resources.bg;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1370, 708);
             this.Controls.Add(this.groupBox1);
