@@ -240,6 +240,7 @@ namespace Computer_Based_DC_Machinery_Laboratory
         private void btnPorts_Click(object sender, EventArgs e)
         {
             string[] portListing = System.IO.Ports.SerialPort.GetPortNames();
+            //MessageBox.Show(portListing.Length.ToString());
             if (portListing.Length > 0)
             {
                 PortList.Items.Clear();
@@ -381,6 +382,77 @@ namespace Computer_Based_DC_Machinery_Laboratory
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void e1ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmCalibrate CalForm = new frmCalibrate();
+            
+            CalForm.Show();
+            CalForm.StartPosition = FormStartPosition.CenterScreen;
+            CalForm.Text = "Calibrate - " + sender.ToString();
+        }
+
+        private void e2ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmCalibrate CalForm = new frmCalibrate();
+
+            CalForm.Show();
+            CalForm.StartPosition = FormStartPosition.CenterScreen;
+            CalForm.Text = "Calibrate - " + sender.ToString();
+        }
+
+        private void i1ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmCalibrate CalForm = new frmCalibrate();
+
+            CalForm.Show();
+            CalForm.StartPosition = FormStartPosition.CenterScreen;
+            CalForm.Text = "Calibrate - " + sender.ToString();
+        }
+
+        private void i2ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmCalibrate CalForm = new frmCalibrate();
+
+            CalForm.Show();
+            CalForm.StartPosition = FormStartPosition.CenterScreen;
+            CalForm.Text = "Calibrate - " + sender.ToString();
+        }
+
+        private void checkBox5_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnReadE1C_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnReadE2C_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnReadN1C_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnReadI1C_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnReadI2C_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void trkSpeed_Scroll_1(object sender, EventArgs e)
+        {
+
         }
     }
 }

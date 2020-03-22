@@ -21,10 +21,11 @@ C:\Latest Projects\Muniz-Marcaida\Software\Computer-Based_DC_Machinery_Laborator
 C:\Latest Projects\Muniz-Marcaida\DC_Machine_Lab\Software\Computer-Based_DC_Machinery_Laboratory\bin\Debug\Computer_Based_DC_Machinery_Laboratory.exe.config
 C:\Latest Projects\Muniz-Marcaida\DC_Machine_Lab\Software\Computer-Based_DC_Machinery_Laboratory\bin\Debug\Computer_Based_DC_Machinery_Laboratory.exe
 C:\Latest Projects\Muniz-Marcaida\DC_Machine_Lab\Software\Computer-Based_DC_Machinery_Laboratory\bin\Debug\Computer_Based_DC_Machinery_Laboratory.pdb
-C:\Latest Projects\Muniz-Marcaida\DC_Machine_Lab\Software\Computer-Based_DC_Machinery_Laboratory\obj\Debug\Computer-Based_DC_Machinery_Laboratory.csprojAssemblyReference.cache
 C:\Latest Projects\Muniz-Marcaida\DC_Machine_Lab\Software\Computer-Based_DC_Machinery_Laboratory\obj\Debug\Computer_Based_DC_Machinery_Laboratory.About.resources
+C:\Latest Projects\Muniz-Marcaida\DC_Machine_Lab\Software\Computer-Based_DC_Machinery_Laboratory\obj\Debug\Computer_Based_DC_Machinery_Laboratory.frmCalibrate.resources
 C:\Latest Projects\Muniz-Marcaida\DC_Machine_Lab\Software\Computer-Based_DC_Machinery_Laboratory\obj\Debug\Computer_Based_DC_Machinery_Laboratory.MainForm.resources
 C:\Latest Projects\Muniz-Marcaida\DC_Machine_Lab\Software\Computer-Based_DC_Machinery_Laboratory\obj\Debug\Computer_Based_DC_Machinery_Laboratory.Properties.Resources.resources
 C:\Latest Projects\Muniz-Marcaida\DC_Machine_Lab\Software\Computer-Based_DC_Machinery_Laboratory\obj\Debug\Computer-Based_DC_Machinery_Laboratory.csproj.GenerateResource.cache
 C:\Latest Projects\Muniz-Marcaida\DC_Machine_Lab\Software\Computer-Based_DC_Machinery_Laboratory\obj\Debug\Computer_Based_DC_Machinery_Laboratory.exe
 C:\Latest Projects\Muniz-Marcaida\DC_Machine_Lab\Software\Computer-Based_DC_Machinery_Laboratory\obj\Debug\Computer_Based_DC_Machinery_Laboratory.pdb
+C:\Latest Projects\Muniz-Marcaida\DC_Machine_Lab\Software\Computer-Based_DC_Machinery_Laboratory\obj\Debug\Computer-Based_DC_Machinery_Laboratory.csprojAssemblyReference.cache

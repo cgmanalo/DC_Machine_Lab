@@ -7,14 +7,24 @@
 
 String SerialData;
 void(* resetFunc) (void) = 0;
-#define Voltmeter1APin A0
-#define Voltmeter1BPin A1
-#define AmmeterPin1 A2
-#define AmmeterPin2 A3
+#define VoltmeterAPin A0
+#define VoltmeterBPin A1
+#define AmmeterPin1 A0
+#define AmmeterPin2 A1
 #define FieldPin 11
 #define PowerPin 12
-#define SpeedPin A4
-#define TorquePin A5
+#define SpeedPin A0
+#define TorquePin A1
+
+//EEPROM LOCATIONS:
+int E1_SLP_EEPROM = 0;
+int E1_INT_EEPROM = 8;
+int E2_SLP_EEPROM = 16;
+int E2_INT_EEPROM = 24;
+int I1_SLP_EEPROM = 32;
+int I1_INT_EEPROM = 40;
+int I2_SLP_EEPROM = 48;
+int I2_INT_EEPROM = 56;
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
@@ -38,26 +48,19 @@ void loop() {
   //wdt_reset();
   SerialData = GetSerialData();
   String CommandField = ExtractField(SerialData,1);
-  if (CommandField == "E1R1"){
-    SR("E1R1|" + (String) RVoltmeter1APin());
-  }
-  if (CommandField == "E1R2"){
-    SR("E1R2|" + (String) RVoltmeter1BPin());
-  }
-  
   if (CommandField == "E1"){
     SR("E1|" + (String) ReadE1());
   }
-  if (CommandField == "E2"){
+  else if (CommandField == "E2"){
     SR("E2|" + (String) ReadE2());
   }
-  if (CommandField == "I1"){
+  else if (CommandField == "I1"){
     SR("I1|" + (String) ReadI1());
   }
-  if (CommandField == "I2"){
+  else if (CommandField == "I2"){
     SR("I2|" + (String) ReadI2());
   }
-  if (CommandField == "N1"){
+  else if (CommandField == "N1"){
     String DataField = ExtractField(SerialData,2);
     if (DataField == ""){
       SR("N1|" + (String) ReadN1());
@@ -66,28 +69,74 @@ void loop() {
       SR("N1|" + (String) AdjustN1(DataField.toInt()));
     }
   }
+  else if (CommandField == "E1R"){
+    SR("E1R|" + (String) readE1Raw());
+  }
+  else if (CommandField == "E2R"){
+    SR("E2R|" + (String) readE2Raw());
+  }
+  else if (CommandField == "I1R"){
+    SR("I1R|" + (String) readI1Raw());
+  }
+  else if (CommandField == "I2r"){
+    SR("I2R|" + (String) readI2Raw());
+  }
+  else if (CommandField == "SCAL"){
+    String Device = ExtractField(SerialData,2);
+    String Slope = ExtractField(SerialData,3);
+    String Intercept = ExtractField(SerialData,4);
+    if (Device == "E1"){
+      SR("CAL|E1|" + saveCalib(Slope,E1_SLP_EEPROM) + "|" + saveCalib(Intercept,E1_INT_EEPROM));
+    }
+    else if (Device == "E2"){
+      SR("CAL|E2|" + saveCalib(Slope,E2_SLP_EEPROM) + "|" + saveCalib(Intercept,E2_INT_EEPROM));     
+    }
+  }
+  else if (CommandField == "RCAL"){
+    String Device = ExtractField(SerialData,2);
+    if (Device == "E1"){
+      SR("CAL|E1|" + readCalib(E1_SLP_EEPROM) + "|" + readCalib(E1_INT_EEPROM));
+    }
+    else if (Device == "E2"){
+      SR("CAL|E2|" + readCalib(E2_SLP_EEPROM) + "|" + readCalib(E2_INT_EEPROM));      
+    }
+  }
   else if (CommandField == "HB"){
     SR("OK.");
   }
 }
 
 //***** SUBROUTINES *****//
-
-float RVoltmeter1APin(){
-  return (analogRead(Voltmeter1APin));
+String saveCalib(String s, int loc){
+  int j=s.length();
+  if (j < 1 || j > 8) {return "INVALID";}
+  EEPROM.write(loc,j);
+  for(int i=1;i<(j+1);i++){
+    EEPROM.write(loc+i,s[i-1]);
+  }
+  return readCalib(loc);
 }
 
-float RVoltmeter1BPin(){
-  return (analogRead(Voltmeter1BPin));
+String readCalib(int loc){
+  char data[10];
+  int i;
+  int slength = EEPROM.read(loc);
+  if (slength < 1 || slength > 8){return "INVALID";}
+  for(i=1;i<(slength+1);i++){
+    data[i-1]=(char)EEPROM.read(loc+i);
+  }
+  data[i-1]='\0';
+  return data;
 }
 
 float ReadE1(){
   float ReadingPos = 0.0;
   float ReadingNeg = 0.0;
 
+  setE1Channel();
   for(int i=0;i<10;i++){
-    ReadingPos += analogRead(Voltmeter1APin);
-    ReadingNeg += analogRead(Voltmeter1BPin);
+    ReadingPos += analogRead(VoltmeterAPin); //read A0 pin of ATMEGA
+    ReadingNeg += analogRead(VoltmeterBPin); //read A1 pin of ATMEGA
     delay(100);
   }
   if (ReadingPos >= ReadingNeg){return (26.0/203.0)*(ReadingPos/10);}
@@ -98,9 +147,38 @@ float ReadE2(){
   float ReadingPos = 0.0;
   float ReadingNeg = 0.0;
 
+  setE2Channel();
   for(int i=0;i<10;i++){
-    ReadingPos += analogRead(Voltmeter1APin);
-    ReadingNeg += analogRead(Voltmeter1BPin);
+    ReadingPos += analogRead(VoltmeterAPin); //read A0 pin of ATMEGA
+    ReadingNeg += analogRead(VoltmeterBPin); //read A1 pin of ATMEGA
+    delay(100);
+  }
+  if (ReadingPos >= ReadingNeg){return (ReadingPos/10);}
+  else {return (-1.0*ReadingNeg/10);}
+}
+
+float ReadE3(){
+  float ReadingPos = 0.0;
+  float ReadingNeg = 0.0;
+
+  setE3Channel();
+  for(int i=0;i<10;i++){
+    ReadingPos += analogRead(VoltmeterAPin); //read A0 pin of ATMEGA
+    ReadingNeg += analogRead(VoltmeterBPin); //read A1 pin of ATMEGA
+    delay(100);
+  }
+  if (ReadingPos >= ReadingNeg){return (26.0/203.0)*(ReadingPos/10);}
+  else {return (-1.0*ReadingNeg*(26.0/203.0)/10);}
+}
+
+float ReadE4(){
+  float ReadingPos = 0.0;
+  float ReadingNeg = 0.0;
+
+  setE4Channel();
+  for(int i=0;i<10;i++){
+    ReadingPos += analogRead(VoltmeterAPin); //read A0 pin of ATMEGA
+    ReadingNeg += analogRead(VoltmeterBPin); //read A1 pin of ATMEGA
     delay(100);
   }
   if (ReadingPos >= ReadingNeg){return (ReadingPos/10);}
@@ -108,11 +186,23 @@ float ReadE2(){
 }
 
 float ReadI1(){
-  return ((0.05*analogRead(AmmeterPin1))-25.55);
+  setI1Channel();
+  return ((0.05*analogRead(AmmeterPin1))-25.55); //read A0 pin of ATMEGA
 }
 
 float ReadI2(){
-  return (0.05*analogRead(AmmeterPin2)-25.55);
+  setI2Channel();
+  return (0.05*analogRead(AmmeterPin2)-25.55);  //read A1 pin of ATMEGA
+}
+
+float ReadI3(){
+  setI3Channel();
+  return ((0.05*analogRead(AmmeterPin1))-25.55); //read A0 pin of ATMEGA
+}
+
+float ReadI4(){
+  setI4Channel();
+  return (0.05*analogRead(AmmeterPin2)-25.55);  //read A1 pin of ATMEGA
 }
 
 float AdjustN1(int DutyCycle){
@@ -122,8 +212,92 @@ float AdjustN1(int DutyCycle){
 }
 
 float ReadN1(){
+  setN1Channel();
   return analogRead(SpeedPin);
 }
+
+float ReadN2(){
+  setN2Channel();
+  return analogRead(SpeedPin);
+}
+
+/////RAW READINGS
+float readE1Raw(){
+  float ReadingPos = 0.0;
+  float ReadingNeg = 0.0;
+
+  setE1Channel();
+  for(int i=0;i<10;i++){
+    ReadingPos += analogRead(VoltmeterAPin);
+    ReadingNeg += analogRead(VoltmeterBPin);
+    delay(100);
+  }
+  if (ReadingPos >= ReadingNeg){return (ReadingPos/10);}
+  else {return (-1.0*ReadingNeg/10);}
+}
+
+float readE2Raw(){
+  float ReadingPos = 0.0;
+  float ReadingNeg = 0.0;
+
+  setE2Channel();
+  for(int i=0;i<10;i++){
+    ReadingPos += analogRead(VoltmeterAPin);
+    ReadingNeg += analogRead(VoltmeterBPin);
+    delay(100);
+  }
+  if (ReadingPos >= ReadingNeg){return (ReadingPos/10);}
+  else {return (-1.0*ReadingNeg/10);}
+}
+
+float readE3Raw(){
+  float ReadingPos = 0.0;
+  float ReadingNeg = 0.0;
+
+  setE3Channel();
+  for(int i=0;i<10;i++){
+    ReadingPos += analogRead(VoltmeterAPin);
+    ReadingNeg += analogRead(VoltmeterBPin);
+    delay(100);
+  }
+  if (ReadingPos >= ReadingNeg){return (ReadingPos/10);}
+  else {return (-1.0*ReadingNeg/10);}
+}
+
+float readE4Raw(){
+  float ReadingPos = 0.0;
+  float ReadingNeg = 0.0;
+
+  setE4Channel();
+  for(int i=0;i<10;i++){
+    ReadingPos += analogRead(VoltmeterAPin);
+    ReadingNeg += analogRead(VoltmeterBPin);
+    delay(100);
+  }
+  if (ReadingPos >= ReadingNeg){return (ReadingPos/10);}
+  else {return (-1.0*ReadingNeg/10);}
+}
+
+float readI1Raw(){
+  setI1Channel();
+  return (analogRead(AmmeterPin1));
+}
+
+float readI2Raw(){
+  setI2Channel();
+  return (analogRead(AmmeterPin2));
+}
+
+float readI3Raw(){
+  setI3Channel();
+  return (analogRead(AmmeterPin1));
+}
+
+float readI4Raw(){
+  setI4Channel();
+  return (analogRead(AmmeterPin2));
+}
+/////
 
 void serialFlush(){
   while(Serial.available() > 0) {
@@ -135,25 +309,54 @@ void SR(String replyMessage){
   Serial.println(replyMessage);
 }
 
-void setPA1Channel(){
-  PORTD = (PORTD & B11100011);
+void setE1Channel(){
+  PORTD = (PORTD & B10001111); //S0=0, S1=0, E=0, enable DEMUX 1 and connect A0(DEMUX)-->A0(ATMEGA) & B0(DEMUX)-->A1(ATMEGA)
   delay(100);
 }
 
-void setPA2Channel(){
-  PORTD = (PORTD & B11100111) | B00000100;
+void setE2Channel(){
+  PORTD = (PORTD & B10011111) | B00010000; //S0=1, S1=0, E=0, enable DEMUX 1 and connect A1(DEMUX)-->A0(ATMEGA) & B1(DEMUX)-->A1(ATMEGA)
   delay(100);
 }
 
-void setPA3Channel(){
-  PORTD = (PORTD & B11101011) | B00001000;
+void setE3Channel(){
+  PORTD = (PORTD & B11001111) | B01000000; //S0=0, S1=0, E=1, enable DEMUX 2 and connect A0(DEMUX)-->A0(ATMEGA) & B0(DEMUX)-->A1(ATMEGA)
   delay(100);
 }
 
-void setPLCChannel(){
-  PORTD = (PORTD & B11101111) | B00001100;
+void setE4Channel(){
+  PORTD = (PORTD & B11011111) | B01010000; //S0=1, S1=0, E=1, enable DEMUX 2 and connect A1(DEMUX)-->A0(ATMEGA) & B1(DEMUX)-->A1(ATMEGA)
   delay(100);
 }
+
+void setI1Channel(){
+  PORTD = (PORTD & B10101111) | B00100000; //S0=0, S1=1, E=0, enable DEMUX 1 and connect A2(DEMUX)-->A0(ATMEGA) & B2(DEMUX)-->A1(ATMEGA)
+  delay(100);
+}
+
+void setI2Channel(){
+  PORTD = (PORTD & B10101111) | B00100000; //S0=0, S1=1, E=0, enable DEMUX 1 and connect A2(DEMUX)-->A0(ATMEGA) & B2(DEMUX)-->A1(ATMEGA)
+  delay(100);
+}
+
+void setI3Channel(){
+  PORTD = (PORTD & B11101111) | B01100000; //S0=0, S1=1, E=1, enable DEMUX 2 and connect A2(DEMUX)-->A0(ATMEGA) & B2(DEMUX)-->A1(ATMEGA)
+  delay(100);
+}
+
+void setI4Channel(){
+  PORTD = (PORTD & B11101111) | B01100000; //S0=0, S1=1, E=1, enable DEMUX 2 and connect A2(DEMUX)-->A0(ATMEGA) & B2(DEMUX)-->A1(ATMEGA)
+  delay(100);
+}
+
+void setN1Channel(){
+   PORTD = (PORTD & B10111111) | B00110000; //S0=1, S1=1, E=0, enable DEMUX 1 and connect A3(DEMUX)-->A0(ATMEGA) & B3(DEMUX)-->A1(ATMEGA)
+  delay(100);
+}void setN2Channel(){
+   PORTD = (PORTD & B11111111) | B01110000; //S0=1, S1=1, E=1, enable DEMUX 2 and connect A3(DEMUX)-->A0(ATMEGA) & B3(DEMUX)-->A1(ATMEGA)
+  delay(100);
+}
+
 
 void sendCharDirect(char charToSend){
   Serial.print(charToSend);
