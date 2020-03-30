@@ -6,17 +6,21 @@ using System.Windows.Forms;
 
 namespace Computer_Based_DC_Machinery_Laboratory
 {
-    static class Program
+    public class Program
     {
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
+        ///public MainForm mform;// = new MainForm();
         [STAThread]
+
         static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            MainForm mform = new MainForm();
+            Application.Run(mform);
         }
+
     }
 }

@@ -31,5 +31,15 @@ namespace Computer_Based_DC_Machinery_Laboratory
         {
 
         }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            //MainForm mform = new MainForm();
+            //mform.ShowDialog();
+            //MessageBox.Show(mform.IncomingText.Text);
+            
+            
+            this.Close();
+        }
     }
 }

@@ -22,13 +22,14 @@ namespace Computer_Based_DC_Machinery_Laboratory
         int I1Countdown;
         int I2Countdown;
         int N1Countdown;
-
+        MyClass newMyClass = new MyClass();
+       
         public MainForm()
         {
             InitializeComponent();
         }
 
-        System.Net.Sockets.TcpClient Client = new System.Net.Sockets.TcpClient();
+        //System.Net.Sockets.TcpClient Client = new System.Net.Sockets.TcpClient();
 
         private void MainForm_Load(object sender, EventArgs e)
         {
@@ -46,7 +47,7 @@ namespace Computer_Based_DC_Machinery_Laboratory
             chkI1.Enabled = false;
             chkI2.Enabled = false;
             chkN1.Enabled = false;
-
+           // newMyClass.MyTimer.Interval = 3000;
            // Client.Rec
             
             //TimerMain.Enabled = true;
@@ -103,6 +104,7 @@ namespace Computer_Based_DC_Machinery_Laboratory
                 chkN1.Enabled = false;
                 lblDateTime.Text = "";
                 tmrDateTime.Enabled = false;
+                //newMyClass.MyTimer.Enabled = false;
             }
             else
             {
@@ -123,6 +125,7 @@ namespace Computer_Based_DC_Machinery_Laboratory
                 chkN1.Enabled = true;
                 trkSpeed.Enabled = true;
                 tmrDateTime.Enabled = true;
+                //newMyClass.MyTimer.Enabled = true;
             }
         }
 
@@ -152,11 +155,12 @@ namespace Computer_Based_DC_Machinery_Laboratory
                 {
                     object readOnly = true;
                     object visible = true;
-                    object save = false;
+                    //object save = false;
                     object fileName = ofd.FileName;
+                    MessageBox.Show(fileName.ToString());
                     object missing = Type.Missing;
-                    object newTemplate = false;
-                    object docType = 0;
+                    //object newTemplate = false;
+                    //object docType = 0;
                     Microsoft.Office.Interop.Word._Document oDoc = null;
                     Microsoft.Office.Interop.Word._Application oWord = new Microsoft.Office.Interop.Word.Application() { Visible = false };
                     oDoc = oWord.Documents.Open(
@@ -199,6 +203,7 @@ namespace Computer_Based_DC_Machinery_Laboratory
             abt.Show();
         }
 
+
         private void TimerMain_Tick(object sender, EventArgs e)
         {
             TimerMain.Enabled = false;
@@ -227,8 +232,6 @@ namespace Computer_Based_DC_Machinery_Laboratory
                         break;
                     case "N1":
                         txtN1Reading.Text = df;
-                        break;
-                    Default:
                         break;
                 }
             }
@@ -315,6 +318,7 @@ namespace Computer_Based_DC_Machinery_Laboratory
             {
                 TimerCountdown = 10;
                 lblDateTime.Text = DateTime.Now.ToString();
+                lblDateTimeShadow.Text = lblDateTime.Text;
             }
             if(chkE1.Checked == true && E1Countdown -- < 1)
             {
@@ -386,11 +390,21 @@ namespace Computer_Based_DC_Machinery_Laboratory
 
         private void e1ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmCalibrate CalForm = new frmCalibrate();
-            
-            CalForm.Show();
-            CalForm.StartPosition = FormStartPosition.CenterScreen;
-            CalForm.Text = "Calibrate - " + sender.ToString();
+            if (chkE1.Checked == false && chkE2.Checked == false && chkI1.Checked  == false && chkI2.Checked  == false && chkN1.Checked == false)
+            {
+                frmCalibrate CalForm = new frmCalibrate();
+                //CalForm.Show();
+                CalForm.ShowDialog();
+                CalForm.StartPosition = FormStartPosition.CenterScreen;
+                CalForm.Text = "Calibrate - " + sender.ToString();
+                CalForm.txtRaw1.Text = "1234";
+                //if (TimerMain.Enabled == true) { TimerMain.Enabled = false; }
+            }
+            else
+            {
+                MessageBox.Show("Please disable instrument reading.");
+            }
+
         }
 
         private void e2ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -454,5 +468,97 @@ namespace Computer_Based_DC_Machinery_Laboratory
         {
 
         }
+
+        private void panel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void btnClearText_Click(object sender, EventArgs e)
+        {
+            IncomingText.Text = "";
+        }
+
+        private void experiment1ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            object readOnly = true;
+            object visible = true;
+            object fileName = "C:" + (char)92 + "Latest Projects" + (char)92 + "Muniz-Marcaida" + (char)92 + "DC_Machine_Lab" + (char)92 + "Others" + (char)92 + sender + ".docx";
+            object missing = Type.Missing;
+            Microsoft.Office.Interop.Word._Document oDoc = null;
+            Microsoft.Office.Interop.Word._Application oWord = new Microsoft.Office.Interop.Word.Application() { Visible = false };
+            oDoc = oWord.Documents.Open(
+                    ref fileName, ref missing, ref readOnly, ref missing,
+                    ref missing, ref missing, ref missing, ref missing,
+                    ref missing, ref missing, ref missing, ref visible,
+                    ref missing, ref missing, ref missing, ref missing);
+            oDoc.ActiveWindow.Selection.WholeStory();
+            oDoc.ActiveWindow.Selection.Copy();
+            IDataObject data = Clipboard.GetDataObject();
+            rtfData.Rtf = data.GetData(DataFormats.Rtf).ToString();
+            oWord.Quit(ref missing, ref missing, ref missing);
+            
+            lblExpTitle.Text = sender.ToString();
+         }
+
+        private void experiment2ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            object readOnly = true;
+            object visible = true;
+            object fileName = "C:" + (char)92 + "Latest Projects" + (char)92 + "Muniz-Marcaida" + (char)92 + "DC_Machine_Lab" + (char)92 + "Others" + (char)92 + sender + ".docx";
+            object missing = Type.Missing;
+            Microsoft.Office.Interop.Word._Document oDoc = null;
+            Microsoft.Office.Interop.Word._Application oWord = new Microsoft.Office.Interop.Word.Application() { Visible = false };
+            oDoc = oWord.Documents.Open(
+                    ref fileName, ref missing, ref readOnly, ref missing,
+                    ref missing, ref missing, ref missing, ref missing,
+                    ref missing, ref missing, ref missing, ref visible,
+                    ref missing, ref missing, ref missing, ref missing);
+            oDoc.ActiveWindow.Selection.WholeStory();
+            oDoc.ActiveWindow.Selection.Copy();
+            IDataObject data = Clipboard.GetDataObject();
+            rtfData.Rtf = data.GetData(DataFormats.Rtf).ToString();
+            oWord.Quit(ref missing, ref missing, ref missing);
+
+            lblExpTitle.Text = sender.ToString();
+            pnlE4.Enabled = false;
+            pnlE4.Visible = false;
+            pnlE3.Enabled = true;
+            pnlE3.Visible = true;
+        }
+
+        private void calibrateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void experiment3ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            object readOnly = true;
+            object visible = true;
+            object fileName = "C:" + (char)92 + "Latest Projects" + (char)92 + "Muniz-Marcaida" + (char)92 + "DC_Machine_Lab" + (char)92 + "Others" + (char)92 + sender + ".docx";
+            object missing = Type.Missing;
+            Microsoft.Office.Interop.Word._Document oDoc = null;
+            Microsoft.Office.Interop.Word._Application oWord = new Microsoft.Office.Interop.Word.Application() { Visible = false };
+            oDoc = oWord.Documents.Open(
+                    ref fileName, ref missing, ref readOnly, ref missing,
+                    ref missing, ref missing, ref missing, ref missing,
+                    ref missing, ref missing, ref missing, ref visible,
+                    ref missing, ref missing, ref missing, ref missing);
+            oDoc.ActiveWindow.Selection.WholeStory();
+            oDoc.ActiveWindow.Selection.Copy();
+            IDataObject data = Clipboard.GetDataObject();
+            rtfData.Rtf = data.GetData(DataFormats.Rtf).ToString();
+            oWord.Quit(ref missing, ref missing, ref missing);
+
+            lblExpTitle.Text = sender.ToString();
+            pnlE3.Enabled = false;
+            pnlE3.Visible = false;
+            pnlE4.Enabled = true;
+            pnlE4.Visible = true;
+        }
+    }
+    public class MyClass {
+        public Timer MyTimer;
     }
 }
